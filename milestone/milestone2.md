@@ -17,7 +17,15 @@ Website code located under webserver in webserver branch of this repo: [here](ht
 
 **Report**
 
-The goal of our website is to develop visualizations that can provide insights to the users. Therefore, our visualization will be generated at run time by the user uploading Spotify data, augmented through APIs to obtain audio features as discussed in milestone#1. Inside the website, we will be providing the following visualizations. 
+## Goal of the project
+
+The goal of our project is to flip the point of view from a public aggregation of data to a personal visualization of your own data. At the core we are using fun visualizations, mostly interesting to a person and their friends, as a mean to get comfortable with owning and downloading your own data that gets used by big companies. Without adding fear or paranoia, we want to raise awareness of the amount of data that is collected and how it can be used to create a profile of you. We want to show that this data can be used for good, and that it can be used to create fun visualizations that can be shared with friends.
+
+The core viualization will be a map with aggregation of music habits related to time and geolocation. We indeed discovered that Spotify collects your IP address every time you interact with the application. This was not provided in the partial data (1 year time series) initially provided, which solved the problem of trying to cross-reference other services to obtain the position.
+
+This is quite original and unique when it comes to music, while is more common in social media and photo databases which use the geo-tagging of the photos to create a map of the user's life. We want to show that this is also possible with music, and that it can be used to create a fun visualization of your life. This embraces the experince of listening to a track which is associated with a specific place and time, a certain Pavlovian effect that would be interesting to explore.
+
+Inside the website, we will furthermore be providing the following visualizations:
 
 ## 1 Spider visualization of audio features
 ![alt text](../images/milestone2Img/1.PNG)
