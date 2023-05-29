@@ -1,15 +1,14 @@
 import defaultImage from './assets/images/default.png';
 
 const CONFIG = {
-  name: 'AstroWind',
+  name: 'SpotifyTwisters',
 
-  origin: 'https://astrowind.vercel.app',
+  origin: 'https://webserver--dancing-meringue-ba10db.netlify.app',
   basePathname: '/',
   trailingSlash: false,
 
-  title: 'AstroWind — Free template for create a website with Astro + Tailwind CSS',
-  description:
-    '🚀 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs.',
+  title: 'SpotifyTwisters twisters', 
+  description:'🚀 is a research tool built by EPFL students to learn more about how is your personal data being used by Spotify.',
   defaultImage: defaultImage,
 
   defaultTheme: 'system', // Values: "system" | "light" | "dark" | "light:only" | "dark:only"

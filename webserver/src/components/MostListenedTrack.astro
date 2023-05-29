@@ -1,0 +1,88 @@
+<div>
+    <h1 class="text-3xl font-bold py-4" id="most-played-track-title" style="display: none;">Your most played songs were:</h1>
+    <div id="most-played-track" class="flex md:flex-row gap-4">
+
+    </div>
+</div>
+
+<script>
+  var reader = new FileReader();
+  //Copy and paste this      
+  document.getElementById('input-file').addEventListener('change', function(e) {
+      if (e.target.files.length > 0) {
+          console.log("File: ", e.target.files)
+          var file = e.target.files[0];
+          console.log("File: ", file)
+          reader.addEventListener("load", parseFile, false);
+          if (file) {
+              reader.readAsText(file);
+          }
+      }
+  });
+
+
+  function parseFile() {
+    var fileData = JSON.parse(reader.result);
+    console.log("JSON data: ", fileData)
+    //Parses the string to a date object
+    fileData = fileData.map((data) => ({
+        ...data,
+        parsedDate: new Date(data.ts)
+    }))
+    //Gets date from data
+    fileData = fileData.map((data) => ({
+        ...data,
+        year: data.parsedDate.getFullYear() + data.parsedDate.getMonth() / 10
+    }))
+    fileData = fileData.map((data) => ({
+        ...data,
+        value: data.ms_played
+    }))
+    console.log("Grouped data: ", fileData)
+
+    //Sum values by same artist name and year
+    var reducedArray = fileData.reduce(function(acc, curr) {
+        var key = curr.spotify_track_uri;
+        if (acc.hasOwnProperty(key)) {
+            acc[key].value += curr.value;
+        } else {
+            acc[key] = {
+                "spotify_track_uri": curr.spotify_track_uri,
+                "value": curr.value
+            };
+        }
+        return acc;
+    }, {});
+
+    fileData = Object.values(reducedArray);
+    console.log("Summed data:", fileData)
+    fileData.sort((a, b) => b.value - a.value)
+
+
+    for (let i = 0; i < 3; i++){
+    const trackId = fileData[i].spotify_track_uri.split(":")[2]
+    const trackUri = `https://open.spotify.com/embed/track/${trackId}?utm_source=generator`
+    const ifrm = document.createElement("iframe");
+    console.log("Track URI: ", trackUri)
+    ifrm.style.width = "100%";
+    ifrm.style.height = "352";
+    ifrm.setAttribute("width", "100%")
+    ifrm.setAttribute("height", "352")
+    ifrm.setAttribute("frameBorder", "0")
+    ifrm.setAttribute("id", `iframe-most-played-${i}`)
+    ifrm.setAttribute("allow", "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture")
+    ifrm.setAttribute("src", trackUri)
+    const old = document.getElementById(`iframe-most-played-${i}`)
+    if(old){
+        old.remove()
+    }
+    document.getElementById("most-played-track").appendChild(ifrm);
+    }
+
+    //Show header title
+    document.getElementById("most-played-track-title").style.display = "block"
+
+  }
+
+
+</script>

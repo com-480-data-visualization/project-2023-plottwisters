@@ -1,11 +1,119 @@
-<div id="bar-race"></div>
+<div>
+  <h1 class="text-3xl font-bold py-4" id="bar-race-title" style="display: none;">Top 10 most listened artists</h1>
+
+  <div id="bar-race"></div>
+
+</div>
 
 <script>
-  import * as d3 from 'd3';
-  // Feel free to change or delete any of the code you see in this editor!
-  var svg = d3.select('#bar-race').append('svg').attr('width', 960).attr('height', 600);
+ import * as d3 from 'd3';
 
-  var tickDuration = 800;
+  var reader = new FileReader();
+  //Copy and paste this      
+  document.getElementById('input-file').addEventListener('change', function(e) {
+      if (e.target.files.length > 0) {
+          console.log("File: ", e.target.files)
+          var file = e.target.files[0];
+          console.log("File: ", file)
+          reader.addEventListener("load", parseFile, false);
+          if (file) {
+              reader.readAsText(file);
+          }
+      }
+  });
+
+
+  function parseFile() {
+    var doesColumnExist = false;
+    var fileData = JSON.parse(reader.result);
+    console.log("JSON data: ", fileData)
+    //Parses the string to a date object
+    fileData = fileData.map((data) => ({
+        ...data,
+        parsedDate: new Date(data.ts)
+    }))
+    //Gets date from data
+    fileData = fileData.map((data) => ({
+        ...data,
+        year: data.parsedDate.getFullYear() + data.parsedDate.getMonth() / 10
+    }))
+    console.log("Grouped data: ", fileData)
+    fileData = fileData.map((data) => ({
+        ...data,
+        value: data.ms_played
+    }))
+
+    //Sum values by same artist name and year
+    var reducedArray = fileData.reduce(function(acc, curr) {
+        var key = curr.master_metadata_album_artist_name + '|' + curr.year;
+        if (acc.hasOwnProperty(key)) {
+            acc[key].value += curr.value;
+        } else {
+            acc[key] = {
+                "artist": curr.master_metadata_album_artist_name,
+                "year": curr.year,
+                "value": curr.value
+            };
+        }
+        return acc;
+    }, {});
+
+    fileData = Object.values(reducedArray);
+    console.log("Summed data:", fileData)
+    fileData.sort((a, b) => {
+        if (a.artist < b.artist) {
+            return 1;
+        }
+        if (a.artist > b.artist) {
+            return -1;
+        }
+        return 0;
+    })
+    console.log("Sorted data by artist name:", fileData)
+
+    fileData.forEach((x, i) => {
+        if (i == 0) {
+            x.lastValue = x.value
+        } else if (x.artist == fileData[i - 1].artist) {
+            x.value += fileData[i - 1].value
+            x.lastValue = fileData[i - 1].value
+        } else {
+            x.lastValue = x.value
+        }
+    })
+    console.log("Added last value to data:", fileData)
+
+    var groupedByYear = d3.group(fileData, d => d.year)
+    var years = [...groupedByYear.keys()]
+    var reconstruct = []
+    groupedByYear.forEach((key, val) => {
+        console.log("Key: ", key)
+        console.log("Val: ", val)
+        var arr2 = key
+        var ranked = arr2.sort((a, b) => b.value - a.value).map((x, i) => ({
+            ...x,
+            rank: i + 1
+        }))
+        reconstruct = [...ranked, ...reconstruct]
+    })
+    console.log("Distinct years: ", years)
+    console.log("Reconstructed years: ", reconstruct)
+
+    renderChart(years, reconstruct)
+    document.getElementById("bar-race-title").style.display = "block"
+  }
+
+
+function renderChart(yearsD, data){
+  d3.select("bar-race-svg").remove()
+  const old = document.getElementById("iframe-most-played")
+    if(old){
+        old.remove()
+    }
+  // Feel free to change or delete any of the code you see in this editor!
+  var svg = d3.select('#bar-race').append('svg').attr('width', 960).attr('height', 600).attr("id", "bar-race-svg");
+
+  var tickDuration = 1200;
 
   var top_n = 12;
   var height = 600;
@@ -40,12 +148,21 @@
     .style('fill', '#cbd5e1')
     .style('text-anchor', 'end');
 
-  let year = 2000;
+  let year = yearsD[0];
 
-  d3.csv('/brand_value.csv').then(function (data) {
+  const halo = function (text, strokeWidth) {
+    text
+      .select(function () {
+        return this.parentNode.insertBefore(this.cloneNode(true), this);
+      })
+      .style('fill', '#cbd5e1')
+      .style('stroke', '#ffffff')
+      .style('stroke-width', strokeWidth)
+      .style('stroke-linejoin', 'round')
+      .style('opacity', 1);
+  };
+
     //if (error) throw error;
-
-    console.log('DATA', data);
 
     data.forEach((d) => {
       (d.value = +d.value),
@@ -93,7 +210,7 @@
 
     svg
       .selectAll('rect.bar')
-      .data(yearSlice, (d) => d.name)
+      .data(yearSlice, (d) => d.artist)
       .enter()
       .append('rect')
       .attr('class', 'bar')
@@ -105,18 +222,18 @@
 
     svg
       .selectAll('text.label')
-      .data(yearSlice, (d) => d.name)
+      .data(yearSlice, (d) => d.artist)
       .enter()
       .append('text')
       .attr('class', 'label')
       .attr('x', (d) => x(d.value) - 8)
       .attr('y', (d) => y(d.rank) + 5 + (y(1) - y(0)) / 2 + 1)
       .style('text-anchor', 'end')
-      .html((d) => d.name);
+      .html((d) => d.artist);
 
     svg
       .selectAll('text.valueLabel')
-      .data(yearSlice, (d) => d.name)
+      .data(yearSlice, (d) => d.artist)
       .enter()
       .append('text')
       .attr('class', 'valueLabel')
@@ -147,12 +264,12 @@
 
       svg.select('.xAxis').transition().duration(tickDuration).ease(d3.easeLinear).call(xAxis);
 
-      let bars = svg.selectAll('.bar').data(yearSlice, (d) => d.name);
+      let bars = svg.selectAll('.bar').data(yearSlice, (d) => d.artist);
 
       bars
         .enter()
         .append('rect')
-        .attr('class', (d) => `bar ${d.name.replace(/\s/g, '_')}`)
+        .attr('class', (d) => `bar ${d.artist.replace(/\s/g, '_')}`)
         .attr('x', x(0) + 1)
         .attr('width', (d) => x(d.value) - x(0) - 1)
         .attr('y', (d) => y(top_n + 1) + 5)
@@ -179,7 +296,7 @@
         .attr('y', (d) => y(top_n + 1) + 5)
         .remove();
 
-      let labels = svg.selectAll('.label').data(yearSlice, (d) => d.name);
+      let labels = svg.selectAll('.label').data(yearSlice, (d) => d.artist);
 
       labels
         .enter()
@@ -188,7 +305,7 @@
         .attr('x', (d) => x(d.value) - 8)
         .attr('y', (d) => y(top_n + 1) + 5 + (y(1) - y(0)) / 2)
         .style('text-anchor', 'end')
-        .html((d) => d.name)
+        .html((d) => d.artist)
         .transition()
         .duration(tickDuration)
         .ease(d3.easeLinear)
@@ -210,7 +327,7 @@
         .attr('y', (d) => y(top_n + 1) + 5)
         .remove();
 
-      let valueLabels = svg.selectAll('.valueLabel').data(yearSlice, (d) => d.name);
+      let valueLabels = svg.selectAll('.valueLabel').data(yearSlice, (d) => d.artist);
 
       valueLabels
         .enter()
@@ -247,22 +364,10 @@
         .attr('y', (d) => y(top_n + 1) + 5)
         .remove();
 
-      yearText.html(~~year);
+      yearText.html(year);
 
-      if (year == 2001) ticker.stop();
+      if (year == yearsD[yearsD.length - 1]) ticker.stop();
       year = d3.format('.1f')(+year + 0.1);
     }, tickDuration);
-  });
-
-  const halo = function (text, strokeWidth) {
-    text
-      .select(function () {
-        return this.parentNode.insertBefore(this.cloneNode(true), this);
-      })
-      .style('fill', '#cbd5e1')
-      .style('stroke', '#ffffff')
-      .style('stroke-width', strokeWidth)
-      .style('stroke-linejoin', 'round')
-      .style('opacity', 1);
-  };
+}
 </script>

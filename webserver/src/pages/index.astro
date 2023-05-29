@@ -3,6 +3,7 @@ import { SITE } from '~/config.mjs';
 import Layout from '~/layouts/PageLayout.astro';
 import Hero from '~/components/widgets/Hero.astro';
 import BarChartRace from '~/components/BarChartRace.astro';
+import MostListenedTrack from '~/components/MostListenedTrack.astro';
 
 const meta = {
   title: SITE.title,
@@ -17,7 +18,7 @@ const meta = {
   </div>
 
   <!-- Hero Widget ******************* -->
-  <Hero callToAction={{ text: 'Upload file', icon: 'tabler:download' }}>
+  <Hero>
     <Fragment slot="title">Spotify twisters</Fragment>
 
     <Fragment slot="subtitle">
@@ -25,27 +26,21 @@ const meta = {
         <span class="font-semibold">SpotifyTwister</span> is a research tool built by EPFL students to learn more about how
         is your personal data being used by Spotify.
       </span>
+      <div>
+        <input type="file" id="input-file" multiple/>
+      </div>
+
     </Fragment>
   </Hero>
 
-  <div class="flex items-center justify-center flex-col">
-    <h1>Your most played music was:</h1>
-    <iframe
-      style="border-radius:12px"
-      src="https://open.spotify.com/embed/track/4cOdK2wGLETKBW3PvgPWqT?utm_source=generator"
-      width="100%"
-      height="352"
-      frameBorder="0"
-      allowfullscreen=""
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-      loading="lazy"></iframe>
+  <div class="flex items-center justify-center flex-col w-full">
+      <MostListenedTrack />
   </div>
-  <div class="flex items-center justify-center flex-col" style="margin-top:2em">
-    <h1>Top 10 most listened artists</h1>
+  <div class="flex items-center justify-center flex-col pb-10" style="margin-top:2em">
     <BarChartRace />
   </div>
 
-  <div class="flex items-center justify-center flex-col">
+  <!-- <div class="flex items-center justify-center flex-col">
     <embed src={'spider.html'} height="600" width="800" title="spider" />
     <embed src={'spider_valence.html'} height="600" width="800" title="spider_valence" />
     <h1>World cloud of your played songs</h1>
@@ -54,5 +49,5 @@ const meta = {
   <div class="flex items-center justify-center flex-col" style="margin-top:2em;">
     <h1>State of mind</h1>
     <embed src={'map.html'} height="500" width="900" title="map_blob" />
-  </div>
+  </div> -->
 </Layout>
