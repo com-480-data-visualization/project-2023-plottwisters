@@ -4,6 +4,7 @@ import Layout from '~/layouts/PageLayout.astro';
 import Hero from '~/components/widgets/Hero.astro';
 import BarChartRace from '~/components/BarChartRace.astro';
 import MostListenedTrack from '~/components/MostListenedTrack.astro';
+import SleepStatistics from '~/components/SleepStatistics.astro';
 
 const meta = {
   title: SITE.title,
@@ -36,6 +37,9 @@ const meta = {
   <div class="flex items-center justify-center flex-col w-full">
       <MostListenedTrack />
   </div>
+  <div class="flex items-center justify-center flex-col w-full py-24">
+    <SleepStatistics />
+</div>
   <div class="flex items-center justify-center flex-col pb-10" style="margin-top:2em">
     <BarChartRace />
   </div>
