@@ -5,6 +5,7 @@ import Hero from '~/components/widgets/Hero.astro';
 import BarChartRace from '~/components/BarChartRace.astro';
 import MostListenedTrack from '~/components/MostListenedTrack.astro';
 import SleepStatistics from '~/components/SleepStatistics.astro';
+import Map from '~/components/Map.astro';
 
 const meta = {
   title: SITE.title,
@@ -33,7 +34,9 @@ const meta = {
 
     </Fragment>
   </Hero>
-
+  <div class="flex items-center justify-center flex-col">
+    <Map />
+  </div>
   <div class="flex items-center justify-center flex-col w-full">
       <MostListenedTrack />
   </div>
@@ -43,6 +46,7 @@ const meta = {
   <div class="flex items-center justify-center flex-col pb-10" style="margin-top:2em">
     <BarChartRace />
   </div>
+
 
   <!-- <div class="flex items-center justify-center flex-col">
     <embed src={'spider.html'} height="600" width="800" title="spider" />

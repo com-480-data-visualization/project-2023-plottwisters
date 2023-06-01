@@ -105,11 +105,7 @@
 
 
 function renderChart(yearsD, data){
-  d3.select("bar-race-svg").remove()
-  const old = document.getElementById("iframe-most-played")
-    if(old){
-        old.remove()
-    }
+  d3.select("#bar-race-svg").remove()
   // Feel free to change or delete any of the code you see in this editor!
   var svg = d3.select('#bar-race').append('svg').attr('width', 960).attr('height', 600).attr("id", "bar-race-svg");
 
@@ -366,7 +362,7 @@ function renderChart(yearsD, data){
 
       yearText.html(year);
 
-      if (year == yearsD[yearsD.length - 1]) ticker.stop();
+      if (year >= yearsD[yearsD.length - 1]) ticker.stop();
       year = d3.format('.1f')(+year + 0.1);
     }, tickDuration);
 }
