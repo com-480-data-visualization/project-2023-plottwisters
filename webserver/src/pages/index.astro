@@ -6,6 +6,7 @@ import BarChartRace from '~/components/BarChartRace.astro';
 import MostListenedTrack from '~/components/MostListenedTrack.astro';
 import SleepStatistics from '~/components/SleepStatistics.astro';
 import Map from '~/components/Map.astro';
+import Radar from '~/components/Radar.astro';
 
 const meta = {
   title: SITE.title,
@@ -34,13 +35,16 @@ const meta = {
 
     </Fragment>
   </Hero>
-  <div class="flex items-center justify-center flex-col">
+  <div class="flex items-center justify-center flex-col w-full">
     <Map />
   </div>
   <div class="flex items-center justify-center flex-col w-full">
       <MostListenedTrack />
   </div>
-  <div class="flex items-center justify-center flex-col w-full py-24">
+  <div class="flex items-center justify-center flex-col w-full py-12">
+    <Radar />
+  </div>  
+<div class="flex items-center justify-center flex-col w-full py-24">
     <SleepStatistics />
 </div>
   <div class="flex items-center justify-center flex-col pb-10" style="margin-top:2em">

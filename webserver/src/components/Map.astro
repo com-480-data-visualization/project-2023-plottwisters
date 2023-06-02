@@ -1,5 +1,5 @@
 <div class="w-full center">
-    <svg id="my_dataviz" width="1000" height="500"></svg>
+    <svg id="my_dataviz" width="1500" height="500"></svg>
 
 </div>
 
@@ -90,7 +90,7 @@
 
     // The svg
     var svg = d3.select("#my_dataviz"),
-        width = +window.innerWidth,
+        width = +svg.attr("width"),
         height = +svg.attr("height");
     
     // Map and projection
