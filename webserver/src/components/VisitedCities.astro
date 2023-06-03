@@ -1,6 +1,6 @@
 <div class="flex w-full items-center h-[400px] justify-center">
-    <ul class="font-medium text-lg" id="cities-list">
-    </ul> 
+    <ol class="font-medium text-lg gap-6 list-decimal" id="cities-list">
+    </ol> 
 </div>
 
 
@@ -57,7 +57,7 @@
 
         console.log("Locations data", data)
         document.getElementById("cities-list").innerHTML = data.map((x: any, i:number) => 
-        `<li class="py-6">${samples[i].parsedDate.toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })},
+        `<li class="my-3">${samples[i].parsedDate.toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })},
             ${x.city}, ${x.country} ${getFlagEmoji(x.countryCode)}</li>`
         ).join("")
         
