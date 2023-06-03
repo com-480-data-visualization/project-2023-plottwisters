@@ -7,6 +7,8 @@ import MostListenedTrack from '~/components/MostListenedTrack.astro';
 import SleepStatistics from '~/components/SleepStatistics.astro';
 import Map from '~/components/Map.astro';
 import Radar from '~/components/Radar.astro';
+import VizLayout from '~/layouts/VizLayout.astro';
+import VisitedCities from '~/components/VisitedCities.astro';
 
 const meta = {
   title: SITE.title,
@@ -60,21 +62,27 @@ const meta = {
     </Fragment>
   </Hero>
   <div id="content" style="display: none">
-  <div class="flex items-center justify-center flex-col w-full">
-    <Map />
-  </div>
-  <div class="flex items-center justify-center flex-col w-full">
+    <div class="flex items-center justify-center flex-col w-full">
       <MostListenedTrack />
-  </div>
-  <div class="flex items-center justify-center flex-col w-full py-12">
-    <Radar />
-  </div>  
-<div class="flex items-center justify-center flex-col w-full py-24">
-    <SleepStatistics />
-</div>
-  <div class="flex items-center justify-center flex-col pb-10" style="margin-top:2em">
-    <BarChartRace />
-  </div>
+    </div>
+    <VizLayout title={"Visited cities"} reverse={true} data={{country: "BR", ms_played: 1500, tz: "2012/10/22", decrypted_ip_addr: "129.34.29.28"}}>
+      <VisitedCities />
+    </VizLayout>
+      <VizLayout title={"Most listened artists"} reverse={false} data={{tz: "2019/10/22", ms_played: 1500}}>
+        <BarChartRace />
+      </VizLayout>
+      <VizLayout title={"Countries visited"} reverse={true} data={{country: "BR", ms_played: 1500, tz: "2012/10/22"}}>
+        <Map />
+      </VizLayout>
+      <VizLayout title={"Mean listening times per weekday"} reverse={false} 
+      data={{ms_played: 1500, tz: "2012/10/22"}}>
+        <Radar />
+      </VizLayout>
+      <VizLayout title={"Your sleep analysis"} reverse={true} 
+      data={{ms_played: 1500, tz: "2012/10/22"}}>
+        <SleepStatistics />      
+    </VizLayout>
+
 </div>
 
 

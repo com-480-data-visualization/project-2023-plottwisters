@@ -1,7 +1,4 @@
-<div class="w-full center">
-    <svg id="my_dataviz" width="1500" height="500"></svg>
-
-</div>
+<svg  id="my_dataviz" width="800" height="700"></svg>
 
 <!-- Load d3.js and the geo projection plugin -->
 <script src="https://d3js.org/d3.v4.js"></script>
@@ -90,7 +87,6 @@
     //Groups data by date.   
     const groupedByTracks = d3.group(fileData, d => d.track_id)
     console.log("Grouped By tracks: ", groupedByTracks)
-
     // The svg
     var svg = d3.select("#my_dataviz"),
         width = +svg.attr("width"),
@@ -99,7 +95,7 @@
     // Map and projection
     var projection = d3.geoMercator()
         .center([0,20])                // GPS of location to zoom on
-        .scale(99)                       // This is like the zoom
+        .scale(width / Math.PI / 2)                       // This is like the zoom
         .translate([ width/2, height/2 ])
     
         Promise.all([

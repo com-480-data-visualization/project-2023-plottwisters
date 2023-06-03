@@ -1,9 +1,4 @@
-<div>
-  <h1 class="text-3xl font-bold py-4" id="bar-race-title" style="display: none;">Top 10 most listened artists</h1>
-
-  <div id="bar-race"></div>
-
-</div>
+<div id="bar-race"></div>
 
 <script>
  import * as d3 from 'd3';
@@ -115,34 +110,14 @@ function renderChart(yearsD, data){
   var height = 600;
   var width = 960;
 
-  const margin = {
+  const m = {
     top: 80,
     right: 0,
     bottom: 5,
     left: 0,
   };
 
-  let barPadding = (height - (margin.bottom + margin.top)) / (top_n * 5);
-
-  // let title = svg.append('text')
-  //    .attr('class', 'title')
-  //    .attr('y', 24)
-  //    .html('Top 10 most listened artists');
-
-  let subTitle = svg
-    .append('text')
-    .attr('class', 'subTitle')
-    .attr('y', 55)
-    .html('Listening times in seconds')
-    .style('fill', '#cbd5e1');
-
-  let caption = svg
-    .append('text')
-    .attr('class', 'caption')
-    .attr('x', width)
-    .attr('y', height - 5)
-    .style('fill', '#cbd5e1')
-    .style('text-anchor', 'end');
+  let barPadding = (height - (m.bottom + m.top)) / (top_n * 5);
 
   let year = yearsD[0];
 
@@ -171,9 +146,11 @@ function renderChart(yearsD, data){
     console.log(data);
 
     let yearSlice = data
-      .filter((d) => d.year == year && !isNaN(d.value))
+      .filter((d) =>  d.year == year && !isNaN(d.value))
+
       .sort((a, b) => b.value - a.value)
-      .slice(0, top_n);
+
+      .slice(0, top_n );
 
     yearSlice.forEach((d, i) => (d.rank = i));
 
@@ -181,25 +158,32 @@ function renderChart(yearsD, data){
 
     let x = d3
       .scaleLinear()
+
       .domain([0, d3.max(yearSlice, (d) => d.value)])
-      .range([margin.left, width - margin.right - 65]);
+
+      .range([m.left, width - m.right - 65]);
 
     let y = d3
       .scaleLinear()
+
       .domain([top_n, 0])
-      .range([height - margin.bottom, margin.top]);
+
+      .range([height - m.bottom, m.top]);
 
     let xAxis = d3
       .axisTop()
       .scale(x)
+
       .ticks(width > 500 ? 5 : 2)
-      .tickSize(-(height - margin.top - margin.bottom))
+
+      .tickSize(-(height - m.top -m.bottom))
+
       .tickFormat((d) => d3.format(',')(d));
 
     svg
       .append('g')
       .attr('class', 'axis xAxis')
-      .attr('transform', `translate(0, ${margin.top})`)
+      .attr('transform', `translate(0, ${m.top})`)
       .call(xAxis)
       .selectAll('.tick line')
       .classed('origin', (d) => d == 0);
@@ -240,7 +224,7 @@ function renderChart(yearsD, data){
     let yearText = svg
       .append('text')
       .attr('class', 'yearText')
-      .attr('x', width - margin.right)
+      .attr('x', width - m.right)
       .attr('y', height - 25)
       .style('text-anchor', 'end')
       .html(~~year)

@@ -7,7 +7,7 @@ const CONFIG = {
   basePathname: '/',
   trailingSlash: false,
 
-  title: 'SpotifyTwisters twisters', 
+  title: 'SpotifyTwisters', 
   description:'🚀 is a research tool built by EPFL students to learn more about how is your personal data being used by Spotify.',
   defaultImage: defaultImage,
 
