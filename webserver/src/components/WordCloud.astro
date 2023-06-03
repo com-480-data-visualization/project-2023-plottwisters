@@ -17,30 +17,42 @@
 
     function parseFile() {
         var fileData = JSON.parse(reader.result);
-        console.log('Word cloud data: ', fileData);
+        fileData = fileData.map((data) => ({
+            word: data.master_metadata_track_name,
+            size: data.ms_played,
+        }));
+        //Lets filter data with less than 5sec played in total.
+        var dict_titles = {};
+        fileData.forEach((element) => {
+            if (element.word in dict_titles) {
+                dict_titles[element.word] += element.size;
+            } else {
+                dict_titles[element.word] = element.size;
+            }
+        });
+        const keysSorted = Object.keys(dict_titles).sort(function (a, b) {
+            return dict_titles[b] - dict_titles[a];
+        });
+        const min = dict_titles[keysSorted[keysSorted.length - 1]];
+        const max = dict_titles[keysSorted[0]];
+        var top_titles = keysSorted.map((el) => {
+            const normalized_font = ((dict_titles[el] - min) / (max - min)) * 30;
+            return { title: el, size: normalized_font };
+        });
+        const colors_arr = top_titles.map((el) => {
+            return el.title === top_titles[0].title ? '#ff0000' : '#69b3a2';
+        });
+        var colorScale = d3
+            .scaleOrdinal()
+            .domain(keysSorted.map((d) => d))
+            .range(colors_arr);
+        const max_titles = 20;
+        top_titles = top_titles.slice(0, Math.min(max_titles, keysSorted.length));
         document.getElementById('word-cloud').style.display = 'block';
-        // List of words
-        var myWords = [
-            { word: 'Running', size: '1000' },
-            { word: 'Surfing', size: '1000' },
-            { word: 'Climbing', size: '100' },
-            { word: 'Kiting', size: '100' },
-            { word: 'Sailing', size: '100' },
-            { word: 'Snowboarding', size: '10' },
-        ];
-
-        // set the dimensions and margins of the graph
-        var margin = { top: 10,
-            right: 10,
-             bottom: 10,
-             left: 10 };
+        var margin = { top: 10, right: 10, bottom: 10, left: 10 };
         var width = 500;
 
-
         var height = 500;
-
-
-        // append the svg object to the body of the page
         var svg = d3
             .select('#word-cloud')
             .append('svg')
@@ -51,18 +63,13 @@
 
             .append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-
-        // Constructs a new cloud layout instance. It run an algorithm to find the position of words that suits your requirements
-        // Wordcloud features that are different from one word to the other must be here
+        colorScale[keysSorted[0]] = '#ff0000';
         var layout = cloud()
-
             .size([width, height])
             .words(
-
-                myWords.map(function (d) {
-
-                    return { text: d.word, 
-                        size: d.size };
+                top_titles.map(function (d) {
+                    console.log(d.title + d.size);
+                    return { text: d.title, size: d.size };
                 })
             )
             .padding(5) //space between words
@@ -74,8 +81,26 @@
             }) // font size of words
             .on('end', draw);
         layout.start();
-
+        function draw(words) {
+            svg.append('g')
+                .attr('transform', 'translate(' + layout.size()[0] / 2 + ',' + layout.size()[1] / 2 + ')')
+                .selectAll('text')
+                .data(words)
+                .enter()
+                .append('text')
+                .style('font-size', function (d) {
+                    return d.size;
+                })
+                .style('fill', colorScale)
+                .attr('text-anchor', 'middle')
+                .style('font-family', 'Impact')
+                .attr('transform', function (d) {
+                    return 'translate(' + [d.x, d.y] + ')rotate(' + d.rotate + ')';
+                })
+                .text(function (d) {
+                    return d.text;
+                });
+        }
     }
-
     /////////////////////////////////////////////////////////
 </script>
