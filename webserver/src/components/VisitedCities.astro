@@ -1,66 +1,54 @@
-<div class="flex w-full items-center h-[400px] justify-center">
-    <ol class="font-medium text-lg gap-6 list-decimal" id="cities-list">
+<div class="flex w-full items-center justify-center p-20">
+    <ol class="font-medium text-md list-decimal grid grid-rows-4 grid-flow-col gap-6" id="cities-list">
     </ol> 
 </div>
 
 
 <script>
     import * as d3 from "d3";
+
     function getFlagEmoji(countryCode) {
-    const codePoints = countryCode
-        .toUpperCase()
-        .split('')
-        .map(char =>  127397 + char.charCodeAt());
-    return String.fromCodePoint(...codePoints);
+        const codePoints = countryCode
+            .toUpperCase()
+            .split('')
+            .map(char => 127397 + char.charCodeAt());
+        return String.fromCodePoint(...codePoints);
     }
 
-    var reader = new FileReader();
-    //Copy and paste this      
-    document.getElementById('input-file').addEventListener('change', function(e) {
-        if (e.target.files.length > 0) {
-            console.log("File: ", e.target.files)
-            var file = e.target.files[0];
-            console.log("File: ", file)
-            reader.addEventListener("load", parseFile, false);
-            if (file) {
-                reader.readAsText(file);
-            }
-        }
+    document.addEventListener('fileParsingComplete', function(event) {
+        var parsedData = event.detail;
+        callbackParsing(parsedData);
     });
 
+    async function callbackParsing(fileData) {
+            console.log("Merged visited cities data: ", fileData)
+            //Parses the string to a date object
+            fileData = fileData.map((data) => ({
+                ...data,
+                parsedDate: new Date(data.ts),
+            }))
 
-    async function parseFile() {
-        var fileData = JSON.parse(reader.result);
-        console.log("JSON data: ", fileData)
-        //Parses the string to a date object
-        fileData = fileData.map((data) => ({
-            ...data,
-            parsedDate: new Date(data.ts),
-        }))
+            //Group data by country
+            const grouped = d3.group(fileData, d => d.conn_country)
 
-        //Group data by country
-        const grouped = d3.group(fileData, d => d.conn_country)
-        
-        const samples = []
+            const samples = []
 
-        for (const [key, value] of grouped.entries()) {
-            //Sort value by date
-            value.sort((a, b) => a.parsedDate - b.parsedDate)
-            samples.push(value[0])
+            for (const [key, value] of grouped.entries()) {
+                //Sort value by date
+                value.sort((a, b) => a.parsedDate - b.parsedDate)
+                samples.push(value[0])
+            }
+
+            const locations = await fetch("http://ip-api.com/batch", {
+                method: "POST",
+                body: JSON.stringify(samples.map((x: any) => x.ip_addr_decrypted))
+            })
+            const data = await locations.json()
+
+            console.log("Locations data", data)
+            document.getElementById("cities-list").innerHTML = data.map((x: any, i: number) =>
+                `<li class="my-3">${samples[i].parsedDate.toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })},
+        ${x.city}, ${x.country} ${getFlagEmoji(x.countryCode)}</li>`
+            ).join("")
         }
-
-        const locations = await fetch("http://ip-api.com/batch", {
-            method: "POST",
-            body: JSON.stringify(samples.map((x: any) => x.ip_addr_decrypted))
-        })
-        const data = await locations.json()
-
-        console.log("Locations data", data)
-        document.getElementById("cities-list").innerHTML = data.map((x: any, i:number) => 
-        `<li class="my-3">${samples[i].parsedDate.toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })},
-            ${x.city}, ${x.country} ${getFlagEmoji(x.countryCode)}</li>`
-        ).join("")
-        
-
-    }
 </script>

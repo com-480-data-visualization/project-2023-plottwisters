@@ -113,22 +113,55 @@ const meta = {
 
 
   <script>
-    //Copy and paste this      
-  document.getElementById('input-file').addEventListener('change', function(e) {
+  var mergedData = []; // Globally accessible variable to store the parsed data
+
+    document.getElementById('input-file').addEventListener('change', function(e) {
       if (e.target.files.length > 0) {
-          console.log("File: ", e.target.files)
-          var file = e.target.files[0];
-          reader.addEventListener("load", parseFile, false);
+        var files = e.target.files;
+        var count = 0; // Counter to track the number of files processed
+
+        for (var i = 0; i < files.length; i++) {
+          var file = files[i];
+          var reader = new FileReader();
+
+          reader.addEventListener("load", function(e) {
+            var fileData = JSON.parse(e.target.result);
+            mergedData = [...mergedData, ...fileData]
+            count++;
+            // Check if all files have been processed
+            if (count === files.length) {
+              mergedData = mergedData.map((data) => ({
+                  ...data,
+                  parsedDate: new Date(data.ts)
+              }))
+              mergedData.sort((a,b) => a.parsedDate - b.parsedDate)
+              // Dispatch a custom event to notify the completion of file parsing
+              var event = new CustomEvent('fileParsingComplete', { detail: mergedData });
+              document.dispatchEvent(event);
+            }
+          }, false);
+
           if (file) {
-              reader.readAsText(file);
+            reader.readAsText(file);
           }
+        }
       }
+    });
+
+  //COPY THIS CODE HERE IN YOUR COMPONENT/
+    // Event listener to handle the completion of file parsing
+  document.addEventListener('fileParsingComplete', function(event) {
+    var parsedData = event.detail;
+    callbackParsing(parsedData);
   });
 
-
-  function parseFile() {
+  function callbackParsing(data) {
+    // Use the parsed data in your function
+    console.log("Parsed Data: ", data);
     document.getElementById('link-spotify-download').style.display = "none";
+    // Perform further processing or actions}
   }
+  //COPY THIS CODE HERE IN YOUR COMPONENT */
 
   </script>
 </Layout>

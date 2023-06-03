@@ -6,24 +6,13 @@
 </div>
 
 <script>
-  var reader = new FileReader();
-  //Copy and paste this      
-  document.getElementById('input-file').addEventListener('change', function(e) {
-      if (e.target.files.length > 0) {
-          console.log("File: ", e.target.files)
-          var file = e.target.files[0];
-          console.log("File: ", file)
-          reader.addEventListener("load", parseFile, false);
-          if (file) {
-              reader.readAsText(file);
-          }
-      }
-  });
+document.addEventListener('fileParsingComplete', function(event) {
+    var parsedData = event.detail;
+    callbackParsing(parsedData);
+});
 
-
-  function parseFile() {
-    var fileData = JSON.parse(reader.result);
-    console.log("JSON data: ", fileData)
+function callbackParsing(fileData) {
+    console.log("JSON merged data: ", fileData)
     //Parses the string to a date object
     fileData = fileData.map((data) => ({
         ...data,
