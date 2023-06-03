@@ -1,4 +1,4 @@
-<div class="word-cloud"></div>
+<div id="word-cloud"></div>
 <script>
     import * as d3 from 'd3';
     import * as cloud from 'd3-cloud';
@@ -17,7 +17,7 @@
 
     function parseFile() {
         var fileData = JSON.parse(reader.result);
-        console.log('JSON data: ', fileData);
+        console.log('Word cloud data: ', fileData);
         document.getElementById('word-cloud').style.display = 'block';
         // List of words
         var myWords = [

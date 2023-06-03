@@ -9,6 +9,7 @@ import Map from '~/components/Map.astro';
 import Radar from '~/components/Radar.astro';
 import VizLayout from '~/layouts/VizLayout.astro';
 import VisitedCities from '~/components/VisitedCities.astro';
+import WordCloud from '~/components/WordCloud.astro';
 
 const meta = {
   title: SITE.title,
@@ -81,6 +82,10 @@ const meta = {
       <VizLayout title={"Your sleep analysis"} reverse={true} 
       data={{ms_played: 1500, tz: "2012/10/22"}}>
         <SleepStatistics />      
+    </VizLayout>
+    <VizLayout title={"Your most used words"} reverse={false} 
+      data={{ms_played: 1500, tz: "2012/10/22"}}>
+        <WordCloud />
     </VizLayout>
 
 </div>
