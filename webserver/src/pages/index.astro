@@ -29,7 +29,7 @@ const meta = {
 
   <!-- Hero Widget ******************* -->
   <Hero>
-    <Fragment slot="title">Spotify twisters</Fragment>
+    <Fragment slot="title">Spotify Twisters</Fragment>
 
     <Fragment slot="subtitle">
       <span class="hidden sm:inline">
@@ -48,7 +48,8 @@ const meta = {
       <div class="mt-16" id="pre-content">
         <p style="display: block;" class="font-light cursor-pointer text-blue-500 underline hover:underline">
           <a href="https://support.spotify.com/us/article/data-rights-and-privacy-settings/">
-            To use this application, please clicke here to ask Spotify for your data.
+            To use this application, please click here to ask Spotify for your data. 
+            We encourage you to download all the data available, you can then upload the endsong.json files here.
           </a>
         </p>
 
@@ -173,10 +174,10 @@ const meta = {
     >
       <SleepStatistics />
     </VizLayout>
-    <VizLayout vizText={''} title={''} reverse={false} dataUsed={{ ms_played: 1500, tz: '2012/10/22' }}>
+    <VizLayout vizText={''} title={'Word Cloud of Track Names'} reverse={false} dataUsed={{ master_metadata_album_artist_name: 'Imagine Dragons'}}>
       <WordCloud />
     </VizLayout>
-    <VizLayout vizText={''} title={''} reverse={true} dataUsed={{ master_metadata_track_name: 'Track Name' }}>
+    <VizLayout vizText={''} title={'Word Cloud of Album Titles'} reverse={true} dataUsed={{ master_metadata_album_album_name: 'Smoke + Mirrors'}}>
       <WorldCloudAlbumn />
     </VizLayout>
   </div>

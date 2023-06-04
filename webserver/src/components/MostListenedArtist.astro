@@ -112,21 +112,21 @@
 
                 //Show header title
                 document.getElementById('most-played-artist-title').style.display = 'block';
-            } else {
-                console.log('artist error');
-                console.log('artist', arrIds);
-                for (let i = 0; i < 3; i++) {
-                    const paragraph = document.createElement('p');
-                    paragraph.textContent = `#${i + 1}\n ${fileData[i].master_metadata_album_artist_name}`;
-                    paragraph.style.textAlign = 'center';
-                    paragraph.style.fontSize = '50px';
-                    paragraph.style.fontWeight = 'bold';
-                    paragraph.style.marginTop = '10px';
-                    paragraph.style.marginLeft = '100px';
+            // } else {
+            //     console.log('artist error');
+            //     console.log('artist', arrIds);
+            //     for (let i = 0; i < 3; i++) {
+            //         const paragraph = document.createElement('p');
+            //         paragraph.textContent = `#${i + 1}\n ${fileData[i].master_metadata_album_artist_name}`;
+            //         paragraph.style.textAlign = 'center';
+            //         paragraph.style.fontSize = '50px';
+            //         paragraph.style.fontWeight = 'bold';
+            //         paragraph.style.marginTop = '10px';
+            //         paragraph.style.marginLeft = '100px';
 
-                    document.getElementById('most-played-artist').appendChild(paragraph);
-                }
-                document.getElementById('most-played-artist-title').style.display = 'block';
+            //         document.getElementById('most-played-artist').appendChild(paragraph);
+            //     }
+            //     document.getElementById('most-played-artist-title').style.display = 'block';
             }
         });
     }
