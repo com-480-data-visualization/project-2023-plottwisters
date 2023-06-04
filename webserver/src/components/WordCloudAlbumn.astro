@@ -1,4 +1,4 @@
-<div id="word-cloud"><h1>World cloud Track names</h1></div>
+<div id="word-cloud-albumn"><h1>World cloud albumn names</h1></div>
 <script>
     import * as stopwords from 'stopword';
     import * as d3 from 'd3';
@@ -21,10 +21,11 @@
         let wordsArr = [];
         var fileData = JSON.parse(reader.result);
         fileData = fileData.forEach((data) => {
-            if (data.master_metadata_track_name !== null && data.master_metadata_track_name !== undefined) {
-                wordsArr = wordsArr.concat(data.master_metadata_track_name.replace(/[&\/.'()]/g, '').split(' '));
+            if (data.master_metadata_album_album_name !== null && data.master_metadata_album_album_name !== undefined) {
+                wordsArr = wordsArr.concat(data.master_metadata_album_album_name.replace(/[&\/.'()]/g, '').split(' '));
             }
         });
+
         console.log('word', wordsArr);
         var dict_titles = {};
         wordsArr = stopwords.removeStopwords(wordsArr);
@@ -60,13 +61,13 @@
             .range(colors_arr);
         const max_titles = 20;
         top_titles = top_titles.slice(0, Math.min(max_titles, keysSorted.length));
-        document.getElementById('word-cloud').style.display = 'block';
+        document.getElementById('word-cloud-albumn').style.display = 'block';
         var margin = { top: 10, right: 10, bottom: 10, left: 10 };
         var width = 1000;
 
         var height = 500;
         var svg = d3
-            .select('#word-cloud')
+            .select('#word-cloud-albumn')
             .append('svg')
 
             .attr('width', width + margin.left + margin.right)
