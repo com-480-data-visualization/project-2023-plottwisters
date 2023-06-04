@@ -165,7 +165,14 @@ function callbackParsing(fileData) {
         var valueExtent = d3.extent(mostListenedTracks, function(d) { return d.value; });
         var size = d3.scaleSqrt()
             .domain(valueExtent)
-            .range([1, 30]);  // Adjust these values to change the minimum and maximum sizes of the circles
+            .range([3, 30]);  // Adjust these values to change the minimum and maximum sizes of the circles
+
+
+        // create color scaling based on same metrix so we can emphasize the same continent with the same color
+        var color = d3.scaleOrdinal()
+            .domain(allContinent)
+            .range(d3.schemePaired);
+
 
         // Draw the map
         svg.append("g")
@@ -191,7 +198,7 @@ function callbackParsing(fileData) {
             .attr("stroke", "black")
             .attr("stroke-width", 1)
             .attr("fill-opacity", .45)
-            .style("fill","#1CD760");
+            .style("fill", function(d){ return color(d.homecontinent) })
 
         // Add tooltips
         var tooltip = d3.select("body").append("div")
