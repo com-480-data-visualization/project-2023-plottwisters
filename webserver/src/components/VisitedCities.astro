@@ -47,7 +47,7 @@
 
             console.log("Locations data", data)
             document.getElementById("cities-list").innerHTML = data.map((x: any, i: number) =>
-                `<li class="my-3">${samples[i].parsedDate.toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })},
+                `<li class="my-3 underline">${samples[i].parsedDate.toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} -
         ${x.city}, ${x.country} ${getFlagEmoji(x.countryCode)}</li>`
             ).join("")
         }

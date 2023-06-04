@@ -83,28 +83,28 @@ const meta = {
       <VizLayout title={"Countries visited"} 
       reverse={true} 
       dataUsed={{country: "BR", ms_played: 1500, tz: "2012/10/22"}}
-      vizText={"Add text here"}
+      vizText={"We use only the country and the number of ms_played in order to show the countries visited. Then, we map the country code to its corresponding centered coordinates."}
 
       >
         <Map />
       </VizLayout>
       <VizLayout title={"Mean listening times per weekday"} 
-      vizText={"Add text here"}
+      vizText={"We group all the records by day of the week and average out the ms_played times!"}
 
       reverse={false} 
       dataUsed={{ms_played: 1500, tz: "2012/10/22"}}>
         <Radar />
       </VizLayout>
       <VizLayout title={"Your sleep analysis"} 
-      vizText={"Add text here"}
+      vizText={"One can infer the sleep time of a person by looking at the time when the person stops listening to music and when the person starts listening to music again. We process the data in a smart manner, by filtering outliers and keeping only what looks like real sleep times."}
       reverse={true} 
       dataUsed={{ms_played: 1500, tz: "2012/10/22"}}>
         <SleepStatistics />      
     </VizLayout>
     <VizLayout
-    vizText={"Add text here"}
+    vizText={""}
 
-     title={"Your most used words"} reverse={false} 
+     title={""} reverse={false} 
       dataUsed={{ms_played: 1500, tz: "2012/10/22"}}>
         <WordCloud />
     </VizLayout>
@@ -155,7 +155,7 @@ const meta = {
     callbackParsing(parsedData);
   });
 
-  function callbackParsing(data) {
+  async function callbackParsing(data) {
     // Use the parsed data in your function
     console.log("Parsed Data: ", data);
     document.getElementById('link-spotify-download').style.display = "none";
