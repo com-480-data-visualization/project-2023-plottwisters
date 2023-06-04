@@ -5966,7 +5966,7 @@ synckit@^0.8.0, synckit@^0.8.4:
     "@pkgr/utils" "^2.3.1"
     tslib "^2.5.0"
 
-tailwind-gradients@^1.0.0:
+tailwind-gradients@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/tailwind-gradients/-/tailwind-gradients-1.0.1.tgz"
   integrity sha512-r2FXgw2G9kq89gSHJCCw+qS5u2hhiAc/3Sgc4XDZkoMjXX31BiR4XYHOmzuoVwkolcwLH+evltF91r9OJZ+gqA==

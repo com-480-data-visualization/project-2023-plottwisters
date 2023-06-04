@@ -1,0 +1,32 @@
+<div class="w-full md:px-16 pb-12">
+    <h1 class="text-3xl font-bold py-4 pb-12 text-gray-700" id="feature-explanation-title" style="display: block;">Understanding Your Data</h1>
+    <div id="feature-explanation" class="flex md:flex-row mx-12 gap-12">
+        <div class="w-full md:w-1/2">
+            <h2 class="text-2xl font-bold py-4 pb-12 text-gray-700">Data Preview</h2>
+            <div class="w-full h-64 bg-gray-200 rounded-lg shadow-md flex items-center justify-center">
+                <p class="text-gray-500">Data Preview</p>
+            </div>
+        </div>
+        <div class="w-full md:w-1/2">
+            <h2 class="text-2xl font-bold py-4 pb-12 text-gray-700">Data Preview</h2>
+            <div class="w-full h-64 bg-gray-200 rounded-lg shadow-md flex items-center justify-center">
+                <p class="text-gray-500">Data Preview</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('fileParsingComplete', function(event) {
+    var parsedData = event.detail;
+    callbackParsing(parsedData);
+});
+
+function callbackParsing(fileData) {
+    // change visibility of this block to none
+    document.getElementById('feature-explanation-title').style.display = 'none';
+    document.getElementById('eature-explanation').style.display = 'none';
+  }
+
+
+</script>

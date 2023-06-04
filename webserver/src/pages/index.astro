@@ -11,6 +11,7 @@ import VizLayout from '~/layouts/VizLayout.astro';
 import VisitedCities from '~/components/VisitedCities.astro';
 import WordCloud from '~/components/WordCloud.astro';
 import World from '~/components/World.astro';
+import FeatureExplanation from '~/components/FeatureExplanation.astro';
 
 const meta = {
   title: SITE.title,
@@ -63,6 +64,60 @@ const meta = {
       </div>
     </Fragment>
   </Hero>
+
+  <!-- Data columns (total 19 columns):
+ #   Column                             Non-Null Count   Dtype 
+---  ------                             --------------   ----- 
+ 0   ts                                 115009 non-null  object
+ 1   ms_played                          115009 non-null  int64 
+ 2   conn_country                       115009 non-null  object
+ 3   ip_addr_decrypted                  115009 non-null  object
+ 4   user_agent_decrypted               115009 non-null  object
+ 5   master_metadata_track_name         114499 non-null  object
+ 6   master_metadata_album_artist_name  114499 non-null  object
+ 7   master_metadata_album_album_name   114499 non-null  object
+ 8   spotify_track_uri                  114499 non-null  object
+ 9   episode_name                       313 non-null     object
+ 10  episode_show_name                  313 non-null     object
+ 11  spotify_episode_uri                313 non-null     object
+ 12  reason_start                       115009 non-null  object
+ 13  reason_end                         115009 non-null  object
+ 14  shuffle                            115009 non-null  bool  
+ 15  skipped                            15340 non-null   object
+ 16  offline                            115009 non-null  bool  
+ 17  offline_timestamp                  115009 non-null  int64 
+ 18  incognito_mode                     115009 non-null  bool  
+
+
+ ts	ms_played	conn_country	ip_addr_decrypted	user_agent_decrypted	master_metadata_track_name	master_metadata_album_artist_name	master_metadata_album_album_name	spotify_track_uri	episode_name	episode_show_name	spotify_episode_uri	reason_start	reason_end	shuffle	skipped	offline	offline_timestamp	incognito_mode
+2018-09-24T17:43:57Z	235382	CH	85.218.54.155	unknown	Sing	Ed Sheeran	x	spotify:track:6K8qKeWo5MsFED7wCR6Kop	None	None	None	fwdbtn	trackdone	True	None	True	1537810148612	False
+-->
+  <VizLayout title={""} 
+  vizText={"These are the 19 features inside the main endsong.json files that Spotify uses to track your data."}
+  reverse={true} 
+  dataUsed={{
+    ts: "2018-09-24T17:43:57Z", 
+    ms_played: 235382, 
+    conn_country: "CH", 
+    ip_addr_decrypted: "85.208.53.147", 
+    user_agent_decrypted: "unknown",
+    master_metadata_track_name: "Sing",
+    master_metadata_album_artist_name: "Ed Sheeran",
+    master_metadata_album_album_name: "x",
+    spotify_track_uri: "spotify:track:6K8qKeWo5MsFED7wCR6Kop",
+    episode_name: "None",
+    episode_show_name: "None",
+    spotify_episode_uri: "None",
+    reason_start: "fwdbtn",
+    reason_end: "trackdone",
+    shuffle: true,
+    skipped: "None",
+    offline: true,
+    offline_timestamp: 1537230143612,
+    incognito_mode: false
+    }}>
+    <FeatureExplanation />
+  </VizLayout>
   <div id="content" style="display: none">
     <div class="flex items-center justify-center flex-col w-full">
       <MostListenedTrack />
